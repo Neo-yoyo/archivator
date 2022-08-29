@@ -11,8 +11,8 @@ typedef unsigned char BYTE;
 int main(int argc, const char** argv) {
 
 
-    std::string path_in = "/home/neo_yoyo/Документы/trash/in";
-    std::string path_out = "/home/neo_yoyo/Документы/trash/out";
+    std::string path_in = "/home/neo_yoyo/Документы/trash/source/";
+    std::string path_out = "/home/neo_yoyo/Документы/trash/compressed/";
 
 
 //    for (int i = 0; i < argc; ++i) {
@@ -44,7 +44,7 @@ int main(int argc, const char** argv) {
         /// Сжатие
         /// If you are doing many compressions, you may want to reuse the context.
         /// See the multiple_simple_compression.c example.
-        size_t const out_file_size = ZSTD_compress((void*) &out_buff[0], out_buff_size, (void*) &in_buff[0], in_file_size, 16);
+        size_t const out_file_size = ZSTD_compress((void*) &out_buff[0], out_buff_size, (void*) &in_buff[0], in_file_size, 3);
         if (ZSTD_isError(out_file_size)) {
             std::cout << ZSTD_getErrorName(out_file_size) << std::endl;
             continue;

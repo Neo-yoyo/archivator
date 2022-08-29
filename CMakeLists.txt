@@ -18,7 +18,5 @@ if(NOT zstd_FOUND)
     FetchContent_MakeAvailable(zstd)
 endif()
 
-add_executable(archivator "main.cpp")
-
-target_link_libraries(archivator PRIVATE
-    zstd)
+add_subdirectory(src/compressor)
+add_subdirectory(src/decompressor)
