@@ -6,22 +6,26 @@
 
 #include <zstd.h>
 
+#include <chrono>
+
 typedef unsigned char BYTE;
+using namespace std::chrono;
+using default_duration = std::chrono::milliseconds;
+using my_clock = std::chrono::high_resolution_clock;
 
 int main(int argc, const char** argv) {
 
-
     std::string path_in = "/home/neo_yoyo/Документы/trash/source/";
     std::string path_out = "/home/neo_yoyo/Документы/trash/compressed/";
-
 
 //    for (int i = 0; i < argc; ++i) {
 //        std::cout << argv[i] << std::endl;
 //    }
 
+    auto start_ts = std::chrono::duration_cast<default_duration>(my_clock::now().time_since_epoch());
 
     for (const auto & entry : std::filesystem::directory_iterator(path_in)) {
-        std::cout << entry.path() << std::endl;
+        //std::cout << entry.path() << std::endl;
 
         std::string in_filename = entry.path().string();
 
@@ -60,7 +64,12 @@ int main(int argc, const char** argv) {
         out_file.write((char*) &out_buff[0], out_file_size);
 
         out_file.close();
+
+
     }
+    auto end_ts = std::chrono::duration_cast<default_duration>(my_clock::now().time_since_epoch());
+
+    std::cout << (end_ts - start_ts).count() << std::endl;
 
 
 
