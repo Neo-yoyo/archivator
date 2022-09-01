@@ -13,16 +13,8 @@ using namespace std::chrono;
 using default_duration = std::chrono::milliseconds;
 using my_clock = std::chrono::high_resolution_clock;
 
-int main(int argc, const char** argv) {
 
-    std::string path_in = "/home/neo_yoyo/Документы/trash/source/";
-    std::string path_out = "/home/neo_yoyo/Документы/trash/compressed/";
-
-//    for (int i = 0; i < argc; ++i) {
-//        std::cout << argv[i] << std::endl;
-//    }
-
-    auto start_ts = std::chrono::duration_cast<default_duration>(my_clock::now().time_since_epoch());
+void compressor_zstd (const std::string& path_in, const std::string& path_out, int compression_level) {
 
     for (const auto & entry : std::filesystem::directory_iterator(path_in)) {
         //std::cout << entry.path() << std::endl;
@@ -48,7 +40,7 @@ int main(int argc, const char** argv) {
         /// Сжатие
         /// If you are doing many compressions, you may want to reuse the context.
         /// See the multiple_simple_compression.c example.
-        size_t const out_file_size = ZSTD_compress((void*) &out_buff[0], out_buff_size, (void*) &in_buff[0], in_file_size, 3);
+        size_t const out_file_size = ZSTD_compress((void*) &out_buff[0], out_buff_size, (void*) &in_buff[0], in_file_size, compression_level);
         if (ZSTD_isError(out_file_size)) {
             std::cout << ZSTD_getErrorName(out_file_size) << std::endl;
             continue;
@@ -65,13 +57,21 @@ int main(int argc, const char** argv) {
 
         out_file.close();
 
-
     }
+}
+
+int main(int argc, const char** argv) {
+
+    std::string path_in = "/home/neo_yoyo/Документы/trash/source";
+    std::string path_out = "/home/neo_yoyo/Документы/trash/compressed";
+    int compression_level = 3;
+
+    auto start_ts = std::chrono::duration_cast<default_duration>(my_clock::now().time_since_epoch());
+
+    compressor_zstd (path_in, path_out, compression_level);
+
     auto end_ts = std::chrono::duration_cast<default_duration>(my_clock::now().time_since_epoch());
-
     std::cout << (end_ts - start_ts).count() << std::endl;
-
-
 
     return 0;
 }

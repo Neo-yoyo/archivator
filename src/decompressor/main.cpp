@@ -8,18 +8,7 @@
 
 typedef unsigned char BYTE;
 
-
-int main(int argc, const char** argv) {
-
-
-    std::string path_in = "/home/neo_yoyo/Документы/trash/compressed/";
-    std::string path_out = "/home/neo_yoyo/Документы/trash/decompressed/";
-
-
-//    for (int i = 0; i < argc; ++i) {
-//        std::cout << argv[i] << std::endl;
-//    }
-
+void decompressor_zstd (const std::string& path_in, const std::string& path_out) {
 
     for (const auto & entry : std::filesystem::directory_iterator(path_in)) {
         std::cout << entry.path() << std::endl;
@@ -63,6 +52,15 @@ int main(int argc, const char** argv) {
         out_file.close();
     }
 
+}
+
+
+int main(int argc, const char** argv) {
+
+    std::string path_in = "/home/neo_yoyo/Документы/trash/compressed";
+    std::string path_out = "/home/neo_yoyo/Документы/trash/decompressed";
+
+    decompressor_zstd (path_in, path_out);
 
 
     return 0;
