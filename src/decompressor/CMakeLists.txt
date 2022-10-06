@@ -1,6 +1,25 @@
 cmake_minimum_required(VERSION 3.12)
+include(FetchContent)
 
-add_executable(decompressor "main.cpp")
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG        v3.2.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
 
-target_link_libraries(decompressor PRIVATE
-    zstd)
+add_executable(compressor
+    "main.cpp"
+    "decompressor.cpp"
+    )
+
+find_package(ZLIB REQUIRED)
+find_path(ZSTD_INCLUDE_DIR zstd.h)
+#find_package(ZSTD REQUIRED)
+include_directories(${ZSTD_INCLUDE_DIR})
+#find_package(tomlplusplus REQUIRED)
+
+target_link_libraries(compressor PRIVATE
+    zstd
+    ZLIB::ZLIB
+    tomlplusplus::tomlplusplus)
